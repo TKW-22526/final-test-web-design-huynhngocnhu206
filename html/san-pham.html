@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Sản phẩm</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+
+<style>
+
+ body{
+    font-family: Arial, Helvetica, sans-serif;
+    background:#f4fff4;
+    margin:0;
+    padding:0;
+}
+
+h1{
+    text-align:center;
+    color:#2e7d32;
+    margin-top:30px;
+    margin-bottom:25px;
+    font-size:40px;
+}
+
+/* search */
+.header-row{
+    display:flex;
+    justify-content:center;
+    margin-bottom:35px;
+}
+
+#searchInput{
+    width:400px;
+    max-width:90%;
+    padding:14px 20px;
+    border:none;
+    outline:none;
+    border-radius:30px;
+    background:white;
+    box-shadow:0 4px 12px rgba(0,0,0,0.1);
+    font-size:16px;
+}
+
+/* grid */
+.product-list{
+    width:95%;
+    margin:auto;
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(230px,1fr));
+    gap:25px;
+    padding-bottom:50px;
+}
+
+/* card */
+.card{
+    background:white;
+    border-radius:18px;
+    overflow:hidden;
+    box-shadow:0 5px 15px rgba(0,0,0,0.08);
+    transition:0.3s;
+    text-align:center;
+}
+
+.card:hover{
+    transform:translateY(-8px);
+    box-shadow:0 10px 25px rgba(0,0,0,0.15);
+}
+
+.card img{
+    width:100%;
+    height:180px;
+    object-fit:cover;
+}
+
+.card h3{
+    color:#2e7d32;
+    margin:15px 10px 8px;
+    font-size:20px;
+}
+
+.card p{
+    color:#ff5722;
+    font-size:18px;
+    font-weight:bold;
+    margin-bottom:10px;
+}
+
+/* ===== BUTTON CHUNG ===== */
+.card button{
+    padding:9px 16px;
+    border:none;
+    border-radius:20px;
+    cursor:pointer;
+    font-size:14px;
+    margin:5px;
+    transition:0.2s;
+}
+/* thêm */
+.add-btn {
+    padding: 14px 24px;
+    background: #2e7d32;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-left: 12px;
+    transition: 0.2s;
+    white-space: nowrap;
+}
+
+.add-btn:hover {
+    background: #1b5e20;
+    transform: scale(1.04);
+}
+
+/* chi tiết */
+.detail-btn{
+    background:linear-gradient(135deg,#4CAF50);
+    color:darkgray;
+}
+.detail-btn:hover{
+    transform:scale(1.05);
+}
+
+/* sửa */
+.edit-btn{
+    background:linear-gradient(135deg,#2196F3);
+    color:white;
+}
+.edit-btn:hover{
+    transform:scale(1.05);
+}
+
+/* xóa */
+.delete-btn{
+    background:linear-gradient(135deg,#F44336);
+    color:white;
+}
+.delete-btn:hover{
+    transform:scale(1.05);
+}
+
+/* footer */
+footer{
+    background:#1b5e20;
+    color:white;
+    padding: 18px 60px;
+    font-size: 13px;
+    letter-spacing: 0.3px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    font-weight: bold;
+}
+footer span {
+    color: var(--green-light);
+}
+
+
+/* MODAL THEM SAN PHAM */
+.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.55);justify-content:center;align-items:center;z-index:9999}
+.modal-content{width:450px;max-width:90%;background:#fff;padding:30px;border-radius:20px;box-shadow:0 10px 30px rgba(0,0,0,.2)}
+.modal-content h2{text-align:center;color:#2e7d32;margin-bottom:20px}
+.modal-content input,.modal-content textarea{width:100%;padding:12px;margin-bottom:15px;border:1px solid #ddd;border-radius:10px;box-sizing:border-box}
+.modal-content textarea{height:100px}
+.save-btn{width:100%;padding:14px;background:#4CAF50;color:#fff;border:none;border-radius:10px;cursor:pointer;font-weight:bold}
+.close{float:right;font-size:28px;cursor:pointer}
+
+</style>
+
+</head>
+<body>
+
+<h1>Danh mục sản phẩm</h1>
+
+<div class="header-row">
+    <input type="text" id="searchInput" placeholder="🔍 Tìm kiếm sản phẩm...">
+    <button class="add-btn" onclick="addProduct()">+ Thêm sản phẩm</button>
+</div>
+
+
+<!-- Modal thêm sản phẩm -->
+<div id="productModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h2>➕ Thêm sản phẩm mới</h2>
+        <input type="text" id="productName" placeholder="Tên sản phẩm">
+        <input type="text" id="productPrice" placeholder="Giá sản phẩm">
+        <input type="text" id="productImage" placeholder="Đường dẫn ảnh">
+        <textarea id="productDesc" placeholder="Mô tả sản phẩm"></textarea>
+        <button class="save-btn" onclick="saveProduct()">Thêm sản phẩm</button>
+    </div>
+</div>
+
+<div class="product-list">
+
+<!-- 1 -->
+<div class="card">
+    <img src="../assets/cachua.webp">
+    <h3>Cà Chua</h3>
+    <p>30.000đ/kg</p>
+    <button onclick="showDetail('Cà chua','30.000/kg','Là loại thực phẩm giàu dưỡng chất, nổi bật với hàm lượng dồi dào vitamin C, kali, folate, vitamin K và chất chống oxy hóa mạnh lycopene. Chúng mang lại nhiều lợi ích tuyệt vời cho sức khỏe như bảo vệ tim mạch, cải thiện làn da, hỗ trợ thị lực và phòng chống ung thư.','../assets/cachua.webp')">Chi tiết</button>
+     <div class="actions">
+        <button class="edit-btn" onclick="editProduct(this)">Sửa</button>
+        <button class="delete-btn" onclick="deleteProduct(this)">Xóa</button>
+    </div>
+</div>
+
+<!-- 2 -->
+<div class="card">
+    <img src="../assets/carot.jpg">
+    <h3>Cà Rốt</h3>
+    <p>25.000đ/kg</p>
+    <button onclick="showDetail('Cà rốt','25.000/kg','Là loại rau củ giàu chất dinh dưỡng, đặc biệt chứa nhiều beta-carotene, chất xơ, kali và các chất chống oxy hóa','../assets/carot.jpg')">Chi tiết</button>
+     <div class="actions">
+        <button class="edit-btn" onclick="editProduct(this)">Sửa</button>
+        <button class="delete-btn" onclick="deleteProduct(this)">Xóa</button>
+    </div>
+</div>
+
+<!--3-->
+ <div class="card">
+    <img src="../assets/cucaitrang.jpg">
+    <h3>Củ cải trắng</h3>
+    <p>18.000đ/kg</p>
+    <button onclick="showDetail('Củ cải trắng','18.000/kg',' Ít calo nhưng giàu chất xơ, vitamin C, kali và các hợp chất chống oxy hóa, mang lại nhiều tác dụng tuyệt vời cho sức khỏe hô hấp, hệ tiêu hóa và hỗ trợ phòng ngừa bệnh tật.','../assets/cucaitrang.jpg')">Chi tiết</button>
+     <div class="actions">
+        <button class="edit-btn" onclick="editProduct(this)">Sửa</button>
+        <button class="delete-btn" onclick="deleteProduct(this)">Xóa</button>
+    </div>
+</div>
+
+<!-- 4-->
+<div class="card">
+    <img src="../assets/bapcai.jpg">
+    <h3>Bắp cải trắng</h3>
+    <p>20.000đ/kg</p>
+    <button onclick="showDetail
+    ('Bắp cải trắng', '20.000/kg', 'Là loại rau phổ biến, chứa hàm lượng dồi dào vitamin C, K, chất xơ và chất chống oxy hóa. Đây là thực phẩm ít calo giúp hỗ trợ giảm cân,tăng sức đề kháng, bảo vệ tim mạch, cải thiện hệ tiêu hóa và hỗ trợ kiểm soát đường huyết hiệu quả','../assets/bapcai.jpg')">Chi tiết</button>
+     <div class="actions">
+        <button class="edit-btn" onclick="editProduct(this)">Sửa</button>
+        <button class="delete-btn" onclick="deleteProduct(this)">Xóa</button>
+    </div>
+</div>
+
+<!-- 5 -->
+<div class="card">
+    <img src="../assets/xalach.jpg">
+    <h3>Xà lách</h3>
+    <p>18.000đ/kg</p>
+    <button onclick="showDetail('Xà lách','18.000/kg','Xà lách chứa nhiều nước (lên đến 95%), dồi dào chất xơ, vitamin A, C, K, folate, và khoáng chất. Loại rau này ít calo, giúp giữ nước và hỗ trợ sức khỏe toàn diện.','../assets/xalach.jpg')">Chi tiết</button>
+     <div class="actions">
+        <button class="edit-btn" onclick="editProduct(this)">Sửa</button>
+        <button class="delete-btn" onclick="deleteProduct(this)">Xóa</button>
+    </div>
+</div>
+
+<!-- 6 -->
+<div class="card">
+    <img src="../assets/dualeo.jpg">
+    <h3>Dưa leo</h3>
+    <p>23.000đ/kg</p>
+    <button onclick="showDetail('Dưa leo','23.000/kg',' Thực phẩm chứa khoảng 95% nước, ít calo nhưng dồi dào vitamin và khoáng chất và mang lại nhiều lợi ích thiết thực như cấp nước hiệu quả, hỗ trợ tiêu hóa, làm đẹp da, kiểm soát cân nặng và tăng cường sức khỏe tim mạch.','../assets/dualeo.jpg')">Chi tiết</button>
+     <div class="actions">
+        <button class="edit-btn" onclick="editProduct(this)">Sửa</button>
+        <button class="delete-btn" onclick="deleteProduct(this)">Xóa</button>
+    </div>
+</div>
+
+<!-- 7 -->
+<div class="card">
+    <img src="../assets/khoaitay.jpg">
+    <h3>Khoai tây</h3>
+    <p>20.000đ/kg</p>
+    <button onclick="showDetail('Khoai tây','20.000/kg','Củ giàu carbohydrate và vitamin C, rất phổ biến trong ẩm thực và khoai tây mang lại nhiều lợi ích cho sức khỏe như kiểm soát cân nặng, ổn định huyết áp, hỗ trợ tiêu hóa và làm đẹp da.','../assets/khoaitay.jpg')">Chi tiết</button>
+     <div class="actions">
+        <button class="edit-btn" onclick="editProduct(this)">Sửa</button>
+        <button class="delete-btn" onclick="deleteProduct(this)">Xóa</button>
+    </div>
+</div>
+
+<!-- 8 -->
+<div class="card">
+    <img src="../assets/khoailang.jpg">
+    <h3>Khoai lang</h3>
+    <p>18.000đ/kg</p>
+    <button onclick="showDetail('Khoai lang','18.000/kg','Nguồn thực phẩm giàu dinh dưỡng, cung cấp dồi dào chất xơ, vitamin A, C, và các khoáng chất như kali, đây là thực phẩm giúp cải thiện tiêu hóa, hỗ trợ giảm cân, tăng cường hệ miễn dịch và ổn định đường huyết','../assets/khoailang.jpg')">Chi tiết</button>
+     <div class="actions">
+        <button class="edit-btn" onclick="editProduct(this)">Sửa</button>
+        <button class="delete-btn" onclick="deleteProduct(this)">Xóa</button>
+    </div>
+</div>
+
+<!-- 9 -->
+<div class="card">
+    <img src="../assets/toi.jpg">
+    <h3>Tỏi</h3>
+    <p>50.000đ/kg</p>
+    <button onclick="showDetail('Tỏi','50.000/kg','Loại gia vị quen thuộc có chứa hàm lượng cao hợp chất lưu huỳnh (allicin), vitamin và khoáng chất. Tỏi nổi bật với công dụng kháng khuẩn tự nhiên, tăng cường hệ miễn dịch, hỗ trợ ổn định huyết áp, giảm cholesterol và ngăn ngừa lão hóa.','../assets/toi.jpg')">Chi tiết</button>
+     <div class="actions">
+        <button class="edit-btn" onclick="editProduct(this)">Sửa</button>
+        <button class="delete-btn" onclick="deleteProduct(this)">Xóa</button>
+    </div>
+</div>
+
+<!-- 10 -->
+<div class="card">
+    <img src="../assets/bido.jpg">
+    <h3>Bí đỏ</h3>
+    <p>18.000đ/kg</p>
+    <button onclick="showDetail('Bí đỏ','18.000/kg','Là loại thực phẩm ít calo (khoảng 49 kcal/chén), dồi dào nước, chất xơ, vitamin A, C, E và các chất chống oxy hóa.','../assets/bido.jpg')">Chi tiết</button>
+     <div class="actions">
+        <button class="edit-btn" onclick="editProduct(this)">Sửa</button>
+        <button class="delete-btn" onclick="deleteProduct(this)">Xóa</button>
+    </div>
+</div>
+
+<!-- 11 -->
+<div class="card">
+    <img src="../assets/otchuong.jpg">
+    <h3>Ớt chuông</h3>
+    <p>40.000đ/kg</p>
+    <button onclick="showDetail('Ớt chuông','40.000/kg','Là loại rau quả ít calo, giàu chất xơ, nước và là nguồn cung cấp vitamin C, A, E dồi dào và là thực phẩm tuyệt vời giúp tăng sức đề kháng, hỗ trợ giảm cân, bảo vệ thị lực và làm đẹp da.','../assets/otchuong.jpg')">Chi tiết</button>
+     <div class="actions">
+        <button class="edit-btn" onclick="editProduct(this)">Sửa</button>
+        <button class="delete-btn" onclick="deleteProduct(this)">Xóa</button>
+    </div>
+</div>
+
+<!-- 12-->
+<div class="card">
+    <img src="../assets/hanhtim.jpg">
+    <h3>Hành tím</h3>
+    <p>35.000đ/kg</p>
+    <button onclick="showDetail
+    ('Bắp cải trắng', '35.000/kg', 'Là loại rau quả ít calo, giàu chất xơ, nước và là nguồn cung cấp vitamin C, A, E dồi dào. Đây là thực phẩm tuyệt vời giúp tăng sức đề kháng, hỗ trợ giảm cân, bảo vệ thị lực và làm đẹp da.','../assets/hanhtim.jpg')">Chi tiết</button>
+     <div class="actions">
+        <button class="edit-btn" onclick="editProduct(this)">Sửa</button>
+        <button class="delete-btn" onclick="deleteProduct(this)">Xóa</button>
+    </div>
+</div>
+
+<!-- 13-->
+<div class="card">
+    <img src="../assets/raungot.jpg">
+    <h3>Rau ngót</h3>
+    <p>15.000đ/bó</p>
+    <button onclick="showDetail
+    ('Rau ngót', '15.000/bó', 'Là loại rau rất giàu vitamin (A, B, C), canxi, sắt và protein thực vật và rau ngót có tính mát, vị ngọt, giúp thanh nhiệt, giải độc, lợi tiểu và bổ huyết. Loại rau này mang lại nhiều lợi ích cho sức khỏe.','../assets/raungot.jpg')">Chi tiết</button>
+     <div class="actions">
+        <button class="edit-btn" onclick="editProduct(this)">Sửa</button>
+        <button class="delete-btn" onclick="deleteProduct(this)">Xóa</button>
+    </div>
+</div>
+
+<!-- 14-->
+<div class="card">
+    <img src="../assets/kimcham.jpg">
+    <h3>Nấm kim châm</h3>
+    <p>100.000đ/kg</p>
+    <button onclick="showDetail
+    ('Nấm kim châm', '100.000/kg', 'Là loại thực phẩm bổ dưỡng, ít calo, giàu chất xơ, kali, và vitamin nhóm B. Nấm mang lại nhiều lợi ích sức khỏe như hỗ trợ giảm cân, tốt cho tim mạch, tăng cường miễn dịch và cải thiện chức năng não bộ.','../assets/kimcham.jpg')">Chi tiết</button>
+     <div class="actions">
+        <button class="edit-btn" onclick="editProduct(this)">Sửa</button>
+        <button class="delete-btn" onclick="deleteProduct(this)">Xóa</button>
+    </div>
+</div>
+
+<!-- 15 -->
+<div class="card">
+    <img src="../assets/sen.jpg">
+    <h3>Ngó sen</h3>
+    <p>25.000đ/kg</p>
+    <button onclick="showDetail
+    ('Ngó sen', '25.000/kg', 'Là thực phẩm thanh đạm, giàu chất xơ, vitamin C và các khoáng chất. Nó có công dụng nổi bật trong việc thanh nhiệt, hỗ trợ tiêu hóa, làm đẹp da và điều hòa huyết áp. Đây là nguyên liệu tự nhiên giàu dinh dưỡng, rất tốt cho sức khỏe tổng thể.','../assets/sen.jpg')">Chi tiết</button>
+     <div class="actions">
+        <button class="edit-btn" onclick="editProduct(this)">Sửa</button>
+        <button class="delete-btn" onclick="deleteProduct(this)">Xóa</button>
+    </div>
+</div>
+
+<!-- 16-->
+<div class="card">
+    <img src="../assets/caixanh.jpg">
+    <h3>Bông cải xanh</h3>
+    <p>60.000đ/kg</p>
+    <button onclick="showDetail
+    ('Bông cải xanh', '60.000/kg', 'Bông cải xanh chứa lượng lớn chất xơ, vitamin C, K, folate và các hợp chất chống oxy hóa mạnh. Nó giúp tăng cường hệ miễn dịch, bảo vệ tim mạch, hỗ trợ tiêu hóa, kiểm soát đường huyết và phòng chống ung thư hiệu quả','../assets/caixanh.jpg')">Chi tiết</button>
+     <div class="actions">
+        <button class="edit-btn" onclick="editProduct(this)">Sửa</button>
+        <button class="delete-btn" onclick="deleteProduct(this)">Xóa</button>
+    </div>
+</div>
+
+<!-- 17-->
+<div class="card">
+    <img src="../assets/caitrang.jpg">
+    <h3>Bông cải trắng</h3>
+    <p>35.000đ/kg</p>
+    <button onclick="showDetail
+    ('Bông cải trắng', '35.000/kg', 'Bông cải trắng là loại rau họ cải giàu dinh dưỡng, ít calo. Chúng chứa nhiều chất xơ, vitamin C, vitamin K, và các hợp chất chống oxy hóa. Nhờ đó, bông cải trắng giúp tăng cường hệ miễn dịch, hỗ trợ tiêu hóa, bảo vệ tim mạch và ngăn ngừa ung thư','../assets/caitrang.jpg')">Chi tiết</button>
+     <div class="actions">
+        <button class="edit-btn" onclick="editProduct(this)">Sửa</button>
+        <button class="delete-btn" onclick="deleteProduct(this)">Xóa</button>
+    </div>
+</div>
+
+<!-- 18-->
+<div class="card">
+    <img src="../assets/hanhla.jpg">
+    <h3>Hành lá</h3>
+    <p>30.000đ/kg</p>
+    <button onclick="showDetail
+    ('Hành lá', '30.000/kg', 'Là loại rau gia vị vô cùng quen thuộc trong ẩm thực. Dù ít calo, hành lá lại chứa dồi dào chất xơ, vitamin (A, C, K) và các hợp chất chống oxy hóa. Chúng được sử dụng phổ biến để tăng hương vị cho các món canh, súp, cháo, xào...','../assets/hanhla.jpg')">Chi tiết</button>
+     <div class="actions">
+        <button class="edit-btn" onclick="editProduct(this)">Sửa</button>
+        <button class="delete-btn" onclick="deleteProduct(this)">Xóa</button>
+    </div>
+</div>
+
+<!-- 19-->
+<div class="card">
+    <img src="../assets/cuden.jpg">
+    <h3>Củ dền</h3>
+    <p>25.000đ/kg</p>
+    <button onclick="showDetail
+    ('Củ dền', '25.000/kg', 'Là loại rau củ giàu dinh dưỡng, đặc biệt chứa nhiều vitamin A, C, axit folic, sắt và nitrat tự nhiên. Tác dụng chính bao gồm hỗ trợ tim mạch, điều hòa huyết áp, bổ máu, giải độc gan và tăng cường hệ miễn dịch.','../assets/cuden.jpg')">Chi tiết</button>
+     <div class="actions">
+        <button class="edit-btn" onclick="editProduct(this)">Sửa</button>
+        <button class="delete-btn" onclick="deleteProduct(this)">Xóa</button>
+    </div>
+</div>
+
+<!-- 20-->
+<div class="card">
+    <img src="../assets/caithia.jpg">
+    <h3>Cải thìa</h3>
+    <p>15.000đ/kg</p>
+    <button onclick="showDetail
+    ('Cải thìa', '15.000/kg', 'Là loại rau có lá xanh đậm, cuống dày trắng mọng, chứa ít calo nhưng giàu chất xơ, vitamin (A, C, K) và khoáng chất. Rau có tính mát, thường dùng trong các món xào, luộc hoặc nấu canh, mang lại nhiều giá trị tuyệt vời cho sức khỏe người dùng.','../assets/caithia.jpg')">Chi tiết</button>
+     <div class="actions">
+        <button class="edit-btn" onclick="editProduct(this)">Sửa</button>
+        <button class="delete-btn" onclick="deleteProduct(this)">Xóa</button>
+    </div>
+</div>
+
+<!-- 21-->
+<div class="card">
+    <img src="../assets/giad.jpg">
+    <h3>Giá đỗ</h3>
+    <p>20.000đ/kg</p>
+    <button onclick="showDetail
+    ('Giá đỗ', '20.000/kg', 'Là thực phẩm giàu dinh dưỡng chứa nhiều vitamin (C, E, B) và khoáng chất. Giá đỗ giúp thanh nhiệt, giảm cholesterol, hỗ trợ giảm cân, làm đẹp da và tốt cho tiêu hóa.','../assets/giad.jpg')">Chi tiết</button>
+     <div class="actions">
+        <button class="edit-btn" onclick="editProduct(this)">Sửa</button>
+        <button class="delete-btn" onclick="deleteProduct(this)">Xóa</button>
+    </div>
+</div>
+
+<!-- 22-->
+<div class="card">
+    <img src="../assets/raudiepca.jpg">
+    <h3>Rau diếp cá</h3>
+    <p>22.000đ/kg</p>
+    <button onclick="showDetail
+    ('Rau diếp cá', '22.000/kg', 'Là loại rau gia vị phổ biến, có vị chua, hơi tanh và tính mát và giúp thanh nhiệt, giải độc, tiêu viêm, hỗ trợ điều trị các bệnh như mụn nhọt, tiểu đường và các vấn đề về đường hô hấp','../assets/raudiepca.jpg')">Chi tiết</button>
+     <div class="actions">
+        <button class="edit-btn" onclick="editProduct(this)">Sửa</button>
+        <button class="delete-btn" onclick="deleteProduct(this)">Xóa</button>
+    </div>
+</div>
+
+<!-- 23-->
+<div class="card">
+    <img src="../assets/bacha.jpg">
+    <h3>Bạc hà</h3>
+    <p>7.000đ/khay</p>
+    <button onclick="showDetail
+    ('Bạc hà', '7.000/khay', 'Bạc hà là thảo dược tự nhiên nổi tiếng nhờ hàm lượng tinh dầu cao (chủ yếu là Menthol), mang lại vị the mát đặc trưng. Dược liệu này được ứng dụng rộng rãi trong y học cổ truyền và hiện đại để làm dịu các cơn đau, sát khuẩn, kích thích tiêu hóa và chữa cảm cúm.','../assets/bacha.jpg')">Chi tiết</button>
+     <div class="actions">
+        <button class="edit-btn" onclick="editProduct(this)">Sửa</button>
+        <button class="delete-btn" onclick="deleteProduct(this)">Xóa</button>
+    </div>
+</div>
+
+<!-- 24-->
+<div class="card">
+    <img src="../assets/bapchuoi.jpg">
+    <h3>Bắp chuối</h3>
+    <p>18.000đ/kg</p>
+    <button onclick="showDetail
+    ('Bắp chuối', '18.000/kg', 'Là phần hoa của cây chuối, rất giàu chất xơ, vitamin (A, C, E) và khoáng chất. Đây là loại thực phẩm bổ dưỡng giúp kiểm soát đường huyết, hỗ trợ tiêu hóa.','../assets/bapchuoi.jpg')">Chi tiết</button>
+     <div class="actions">
+        <button class="edit-btn" onclick="editProduct(this)">Sửa</button>
+        <button class="delete-btn" onclick="deleteProduct(this)">Xóa</button>
+    </div>
+</div>
+
+<!-- 25-->
+<div class="card">
+    <img src="../assets/khom.jpg">
+    <h3>Khóm</h3>
+    <p>8.000đ/kg</p>
+    <button onclick="showDetail
+    ('Khóm', '8.000/kg', 'Là loại trái cây nhiệt đới giàu vitamin C, mangan và enzyme Bromelain. Quả khóm có tác dụng tăng cường miễn dịch, hỗ trợ tiêu hóa, kháng viêm, giảm ho, và chống oxy hóa.','../assets/khom.jpg')">Chi tiết</button>
+     <div class="actions">
+        <button class="edit-btn" onclick="editProduct(this)">Sửa</button>
+        <button class="delete-btn" onclick="deleteProduct(this)">Xóa</button>
+    </div>
+</div>
+
+<!-- 26-->
+<div class="card">
+    <img src="../assets/daubap.jpg">
+    <h3>Đậu bắp</h3>
+    <p>26.000đ/kg</p>
+    <button onclick="showDetail
+    ('Đậu bắp', '26.000/kg', 'Là loại rau quả nhiệt đới ít calo nhưng giàu dinh dưỡng, đặc biệt nổi tiếng với chất nhầy tự nhiên chứa nhiều vitamin (A, C, K, folate) và khoáng chất. Loại quả này là thực phẩm tuyệt vời để hỗ trợ tiêu hóa, kiểm soát đường huyết, bảo vệ tim mạch.','../assets/daubap.jpg')">Chi tiết</button>
+     <div class="actions">
+        <button class="edit-btn" onclick="editProduct(this)">Sửa</button>
+        <button class="delete-btn" onclick="deleteProduct(this)">Xóa</button>
+    </div>
+</div>
+
+<!-- 27-->
+<div class="card">
+    <img src="../assets/mongtoi.jpg">
+    <h3>Mồng tơi</h3>
+    <p>15.000đ/kg</p>
+    <button onclick="showDetail
+    ('Mồng tơi', '15.000/kg', 'Là loại dây leo nhiệt đới nổi tiếng với tính mát, giàu vitamin và chất nhầy','../assets/mongtoi.jpg')">Chi tiết</button>
+     <div class="actions">
+        <button class="edit-btn" onclick="editProduct(this)">Sửa</button>
+        <button class="delete-btn" onclick="deleteProduct(this)">Xóa</button>
+    </div>
+</div>
+
+<!-- 28-->
+<div class="card">
+    <img src="../assets/bidao.jpg">
+    <h3>Bí đao</h3>
+    <p>18.000đ/kg</p>
+    <button onclick="showDetail
+    ('Bí đao', '18.000/kg', 'Là loại dây leo thuộc họ bầu bí, chứa đến (95%) nước và nhiều vitamin. Nổi bật với đặc tính mát, ít calo và không chứa chất béo, quả bí đao được sử dụng phổ biến trong ẩm thực để thanh nhiệt và hỗ trợ giảm cân.','../assets/bidao.jpg')">Chi tiết</button>
+     <div class="actions">
+        <button class="edit-btn" onclick="editProduct(this)">Sửa</button>
+        <button class="delete-btn" onclick="deleteProduct(this)">Xóa</button>
+    </div>
+</div>
+
+<!-- 29 -->
+<div class="card">
+    <img src="../assets/khoqua.jpg">
+    <h3>Khổ qua</h3>
+    <p>10.000đ/kg</p>
+    <button onclick="showDetail
+    ('Khổ qua', '10.000/kg', 'Là loại cây dây leo thuộc họ bầu bí. Theo y học, vị đắng đặc trưng của khổ qua mang lại nhiều lợi ích sức khỏe như thanh nhiệt, hỗ trợ kiểm soát đường huyết và giải độc.','../assets/khoqua.jpg')">Chi tiết</button>
+      <div class="actions">
+        <button class="edit-btn" onclick="editProduct(this)">Sửa</button>
+        <button class="delete-btn" onclick="deleteProduct(this)">Xóa</button>
+    </div>
+</div>
+
+<!-- 30-->
+<div class="card">
+    <img src="../assets/mangtuoi.jpg">
+    <h3>Măng tươi</h3>
+    <p>37.000đ/kg</p>
+    <button onclick="showDetail
+    ('Măng tươi', '37.000/kg', 'Là búp non của các loại tre, nứa, vầu... Măng giàu chất xơ và vitamin, nhưng có chứa độc tố cyanide.','../assets/mangtuoi.jpg')">Chi tiết</button>
+     <div class="actions">
+        <button class="edit-btn" onclick="editProduct(this)">Sửa</button>
+        <button class="delete-btn" onclick="deleteProduct(this)">Xóa</button>
+    </div>
+</div>
+
+
+<!-- 31-->
+<div class="card">
+    <img src="../assets/catim.jpg">
+    <h3>Cà tím</h3>
+    <p>19.000đ/kg</p>
+    <button onclick="showDetail
+    ('Cà tím', '19.000/kg', 'Là loại rau ăn quả thuộc họ cà, rất giàu chất xơ và chất chống oxy hóa. Đây là thực phẩm tuyệt vời giúp giảm cân, tốt cho tim mạch và ổn định đường huyết.','../assets/catim.jpg')">Chi tiết</button>
+     <div class="actions">
+        <button class="edit-btn" onclick="editProduct(this)">Sửa</button>
+        <button class="delete-btn" onclick="deleteProduct(this)">Xóa</button>
+    </div>
+</div>
+
+<!-- 32-->
+<div class="card">
+    <img src="../assets/nhadam.jpg">
+    <h3>Nha đam</h3>
+    <p>6.800đ/kg</p>
+    <button onclick="showDetail
+    ('Nha đam', '6.800/kg', 'Là loại cây mọng nước giàu vitamin, khoáng chất và chất chống oxy hóa. Cây mang lại nhiều lợi ích vượt trội cho sức khỏe và sắc đẹp như thanh nhiệt, hỗ trợ tiêu hóa, dưỡng ẩm da và làm lành vết thương.','../assets/nhadam.jpg')">Chi tiết</button>
+     <div class="actions">
+        <button class="edit-btn" onclick="editProduct(this)">Sửa</button>
+        <button class="delete-btn" onclick="deleteProduct(this)">Xóa</button>
+    </div>
+</div>
+
+<!-- 33-->
+<div class="card">
+    <img src="../assets/rauma.jpg">
+    <h3>Rau má</h3>
+    <p>12.000đ/túi</p>
+    <button onclick="showDetail
+    ('Rau má', '12.000/túi', 'Là loại thảo dược thân thảo phổ biến, có vị đắng nhẹ, tính mát. Nó được sử dụng rộng rãi để thanh nhiệt, giải độc, hỗ trợ tiêu hóa, làm đẹp da và cải thiện tuần hoàn máu.','../assets/rauma.jpg')">Chi tiết</button>
+    <div class="actions">
+        <button class="edit-btn" onclick="editProduct(this)">Sửa</button>
+        <button class="delete-btn" onclick="deleteProduct(this)">Xóa</button>
+    </div>
+</div>
+
+<!-- 34-->
+<div class="card">
+    <img src="../assets/cams.jpg">
+    <h3>Cam</h3>
+    <p>5.000đ/kg</p>
+    <button onclick="showDetail
+    ('Cam', '5.000/kg', 'Là loại cây ăn trái chủ lực của vùng Đồng bằng sông Cửu Long (nổi tiếng nhất tại Vĩnh Long). Quả có vỏ dày, sần sùi, màu vàng sậm hoặc lục. Đây là nguồn dồi dào vitamin C, chất xơ và chất chống oxy hóa, mang lại nhiều lợi ích cho sức khỏe.','../assets/cams.jpg')">Chi tiết</button>
+     <div class="actions">
+        <button class="edit-btn" onclick="editProduct(this)">Sửa</button>
+        <button class="delete-btn" onclick="deleteProduct(this)">Xóa</button>
+    </div>
+</div>
+
+<!-- 35-->
+<div class="card">
+    <img src="../assets/duahau.jpg">
+    <h3>Dưa hấu</h3>
+    <p>15.000đ/kg</p>
+    <button onclick="showDetail
+    ('Dưa hấu', '15.000/kg', 'Là loại trái cây nhiệt đới chứa nhiều nước, giàu Vitamin A, C và chất chống oxy hóa Lycopene.','../assets/duahau.jpg')">Chi tiết</button>
+
+    <div class="actions">
+        <button class="edit-btn" onclick="editProduct(this)">Sửa</button>
+        <button class="delete-btn" onclick="deleteProduct(this)">Xóa</button>
+    </div>
+</div>
+</div>
+
+</script>
+
+</div>
+
+<script>
+
+// tìm kiếm
+document.getElementById("searchInput").addEventListener("keyup", function(){
+
+    let key = this.value.toLowerCase();
+    let cards = document.querySelectorAll(".card");
+
+    cards.forEach(c=>{
+        let name = c.querySelector("h3").innerText.toLowerCase();
+        c.style.display = name.includes(key) ? "block" : "none";
+    });
+});
+// them san pham 
+
+function addProduct(){
+ document.getElementById("productModal").style.display="flex";
+}
+function closeModal(){
+ document.getElementById("productModal").style.display="none";
+}
+function saveProduct(){
+ let name=document.getElementById("productName").value;
+ let price=document.getElementById("productPrice").value;
+ let img=document.getElementById("productImage").value;
+ let desc=document.getElementById("productDesc").value;
+ if(!name||!price){alert("Vui lòng nhập tên và giá sản phẩm");return;}
+ let card=document.createElement("div");
+ card.className="card";
+ card.innerHTML=`<img src="${img||'../assets/cachua.webp'}"><h3>${name}</h3><p>${price}</p><button onclick="showDetail('${name}','${price}','${desc}','${img}')">Chi tiết</button><div class="actions"><button class="edit-btn" onclick="editProduct(this)">Sửa</button><button class="delete-btn" onclick="deleteProduct(this)">Xóa</button></div>`;
+ document.querySelector(".product-list").prepend(card);
+ closeModal();
+}
+
+
+function showDetail(name, price, desc,img) {
+ const params = new URLSearchParams({ name, price, desc, img});
+ window.location.href = 'chi-tiet.html?' + params.toString();
+}
+
+
+/* ====== XÓA ====== */
+function deleteProduct(btn){
+    let card = btn.closest(".card");
+    card.remove();
+}
+
+/* ====== SỬA ====== */
+function editProduct(btn){
+    let card = btn.closest(".card");
+
+    let nameTag = card.querySelector("h3");
+    let priceTag = card.querySelector("p");
+
+    let newName = prompt("Nhập tên mới:", nameTag.innerText);
+    let newPrice = prompt("Nhập giá mới:", priceTag.innerText);
+
+    if(newName) nameTag.innerText = newName;
+    if(newPrice) priceTag.innerText = newPrice;
+}
+</script>
+
+
+<footer>
+    <p>Huỳnh Ngọc Như  </p>        <p>MSSV: 110124139</p>  
+     <p> DA24TTA- Công nghệ thông tin</p>        <p>Email:huynhnhutv2006@gmail.com</p>
+</footer>
+
+</body>
+</html>

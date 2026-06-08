@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Liên Hệ</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    background:#f5fff5;
+}
+
+/* Banner */
+.banner{
+    background:linear-gradient(rgba(0,0,0,.5),rgba(0,0,0,.5)),
+    url("https://images.unsplash.com/photo-1542838132-92c53300491e");
+    background-size:cover;
+    background-position:center;
+    height:300px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:white;
+}
+
+.banner h1{
+    font-size:50px;
+}
+
+/* Nội dung */
+.contact{
+    width:90%;
+    max-width:1200px;
+    margin:60px auto;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:40px;
+}
+
+/* Thông tin */
+.info{
+    background:white;
+    padding:35px;
+    border-radius:20px;
+    box-shadow:0 5px 15px rgba(0,0,0,.1);
+}
+
+.info h2{
+    color:#2e7d32;
+    margin-bottom:20px;
+}
+
+.info p{
+    margin:20px 0;
+    font-size:18px;
+}
+
+.info i{
+    color:#4CAF50;
+    margin-right:10px;
+}
+
+/* Form */
+.form-contact{
+    background:white;
+    padding:35px;
+    border-radius:20px;
+    box-shadow:0 5px 15px rgba(0,0,0,.1);
+}
+
+.form-contact h2{
+    color:#2e7d32;
+    margin-bottom:20px;
+}
+
+.form-contact input,
+.form-contact textarea{
+    width:100%;
+    padding:12px;
+    margin-bottom:15px;
+    border:1px solid #ddd;
+    border-radius:10px;
+    outline:none;
+}
+
+.form-contact button{
+    background:#4CAF50;
+    color:white;
+    border:none;
+    padding:12px 25px;
+    border-radius:10px;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.form-contact button:hover{
+    background:#2e7d32;
+}
+
+/* Footer */
+footer{
+    background:#1b5e20;
+    color:white;
+    padding: 18px 60px;
+    font-size: 13px;
+    letter-spacing: 0.3px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    font-weight: bold;
+}
+
+
+/* Mobile */
+@media(max-width:768px){
+    .contact{
+        grid-template-columns:1fr;
+    }
+
+    .banner h1{
+        font-size:35px;
+    }
+}
+
+</style>
+</head>
+<body>
+
+<div class="banner">
+    <h1>Liên Hệ Với Chúng Tôi</h1>
+</div>
+
+<section class="contact">
+
+    <!-- Thông tin -->
+    <div class="info">
+        <h2>Thông Tin Liên Hệ</h2>
+
+        <p>
+            <i class="fas fa-map-marker-alt"></i>
+            Đại học Trà Vinh
+        </p>
+
+        <p>
+            <i class="fas fa-phone"></i>
+            0359 822 343
+        </p>
+
+        <p>
+            <i class="fas fa-envelope"></i>
+            huynhnhutv2006@gmail.com
+        </p>
+
+        <p>
+            <i class="fas fa-clock"></i>
+            07:00 - 21:00 (Thứ 2 - Chủ Nhật)
+        </p>
+    </div>
+
+    <!-- Form -->
+   <div class="form-contact">
+    <h2>Phản Hồi Khách Hàng</h2>
+
+    <form>
+        <input type="text" placeholder="Nhập họ và tên" required>
+
+        <input type="email" placeholder="Nhập email" required>
+
+        <textarea rows="5"
+        placeholder="Nhập ý kiến hoặc phản hồi của bạn..."
+        required></textarea>
+
+        <button type="submit">
+            Gửi Phản Hồi
+        </button>
+    </form>
+</div>
+
+</section>
+
+<footer>
+    <p>Huỳnh Ngọc Như  </p>        <p>MSSV: 110124139</p>  
+     <p> DA24TTA- Công nghệ thông tin</p>        <p>Email:huynhnhutv2006@gmail.com</p>
+</footer>
+
+</body>
+</html>

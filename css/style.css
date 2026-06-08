@@ -1,0 +1,446 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --green-dark:   #1b4d20;
+    --green-mid:    #2e7d32;
+    --green-light:  #4caf50;
+    --green-pale:   #e8f5e9;
+    --cream:        #fdf9f2;
+    --text-dark:    #1a1a1a;
+    --text-muted:   #5a6a4a;
+    --white:        #ffffff;
+    --radius:       14px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--text-dark);
+}
+
+/* ── HEADER ─────────────────────────────── */
+header {
+    background: var(--green-dark);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 60px;
+    height: 70px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+}
+
+.logo img {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid rgba(255,255,255,0.3);
+}
+
+.logo h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    color: var(--white);
+    letter-spacing: 1.5px;
+    font-weight: 600;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+nav a {
+    color: rgba(255,255,255,0.8);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+    padding: 8px 16px;
+    border-radius: 50px;
+    transition: all 0.25s ease;
+}
+
+nav a:hover {
+    color: var(--white);
+    background: rgba(255,255,255,0.12);
+}
+
+/* ── BANNER ─────────────────────────────── */
+.banner {
+    height: 92vh;
+    min-height: 520px;
+    background: url("https://images.unsplash.com/photo-1542838132-92c53300491e") center/cover no-repeat;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    overflow: hidden;
+}
+
+.banner::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        to bottom,
+        rgba(15, 40, 15, 0.55) 0%,
+        rgba(10, 30, 10, 0.38) 50%,
+        rgba(20, 50, 20, 0.75) 100%
+    );
+}
+
+.banner-content {
+    position: relative;
+    z-index: 1;
+    padding: 0 20px;
+}
+
+.banner-tag {
+    display: inline-block;
+    background: rgba(255,255,255,0.18);
+    border: 1px solid rgba(255,255,255,0.35);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    padding: 7px 20px;
+    border-radius: 50px;
+    margin-bottom: 22px;
+    backdrop-filter: blur(4px);
+}
+
+.banner h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(40px, 7vw, 72px);
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.1;
+    margin-bottom: 18px;
+    text-shadow: 0 2px 20px rgba(0,0,0,0.3);
+}
+
+.banner p {
+    font-size: 18px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.88);
+    letter-spacing: 0.5px;
+}
+
+/* ── PRODUCTS ────────────────────────────── */
+.products {
+    padding: 90px 60px;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.section-tag {
+    display: inline-block;
+    background: var(--green-pale);
+    color: var(--green-mid);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 6px 18px;
+    border-radius: 50px;
+    margin-bottom: 14px;
+}
+
+.section-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 4vw, 42px);
+    font-weight: 600;
+    color: var(--green-dark);
+    line-height: 1.2;
+}
+
+.product-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 28px;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.card {
+    background: var(--white);
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: 1px solid rgba(46,125,50,0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(27, 77, 32, 0.15);
+}
+
+.card-img-wrap {
+    position: relative;
+    overflow: hidden;
+    height: 220px;
+}
+
+.card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+    display: block;
+}
+
+.card:hover .card-img-wrap img {
+    transform: scale(1.07);
+}
+
+.card-badge {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    background: var(--green-mid);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    padding: 4px 12px;
+    border-radius: 50px;
+}
+
+.card-body {
+    padding: 20px 22px 22px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+.card-meta {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-top: 3px;
+}
+
+.card-price {
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--green-mid);
+    white-space: nowrap;
+}
+
+
+.about {
+    background: var(--green-dark);
+    padding: 80px 60px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.about::before {
+    content: '';
+    position: absolute;
+    top: -80px; left: 50%;
+    transform: translateX(-50%);
+    width: 500px; height: 500px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.03);
+    pointer-events: none;
+}
+
+.about p {
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 1.85;
+    color: rgba(255,255,255,0.82);
+    max-width: 620px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.about p strong {
+    color: #fff;
+    font-weight: 500;
+}
+
+.about-icon {
+    font-size: 36px;
+    margin-bottom: 18px;
+}
+
+
+ footer {
+    background: #FFF8E7;
+    color: #2e7d32;
+    padding: 18px 60px;
+    font-size: 13px;
+    letter-spacing: 0.3px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    font-weight: bold;
+}
+
+footer span {
+    color: var(--green-light);
+}
+/* ================= RESPONSIVE ================= */
+
+/* Tablet */
+@media (max-width: 992px){
+
+    header{
+        padding: 0 25px;
+    }
+
+    .products{
+        padding: 70px 30px;
+    }
+
+    .about{
+        padding: 70px 30px;
+    }
+
+    footer{
+        padding: 18px 30px;
+    }
+}
+
+/* Điện thoại */
+@media (max-width: 768px){
+
+    header{
+        flex-direction: column;
+        height: auto;
+        padding: 15px;
+        gap: 12px;
+    }
+
+    nav{
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    nav a{
+        font-size: 13px;
+        padding: 6px 12px;
+    }
+
+    .banner{
+        height: 75vh;
+        min-height: 450px;
+    }
+
+    .banner h1{
+        font-size: 38px;
+    }
+
+    .banner p{
+        font-size: 15px;
+    }
+
+    .products{
+        padding: 60px 20px;
+    }
+
+    .product-list{
+        grid-template-columns: repeat(2,1fr);
+        gap: 18px;
+    }
+
+    .card-img-wrap{
+        height: 180px;
+    }
+
+    .card-body{
+        padding: 15px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .about{
+        padding: 60px 20px;
+    }
+
+    .about p{
+        font-size: 16px;
+    }
+
+    footer{
+        flex-direction: column;
+        text-align: center;
+        padding: 15px;
+    }
+}
+
+/* Điện thoại nhỏ */
+@media (max-width: 480px){
+
+    .banner h1{
+        font-size: 30px;
+    }
+
+    .banner p{
+        font-size: 14px;
+    }
+
+    .product-list{
+        grid-template-columns: 1fr;
+    }
+
+    .card-img-wrap{
+        height: 220px;
+    }
+
+    .section-header h2{
+        font-size: 26px;
+    }
+
+    .logo h2{
+        font-size: 16px;
+    }
+
+    nav a{
+        font-size: 12px;
+    }
+}
+
+
+
+
+
